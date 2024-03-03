@@ -22,6 +22,7 @@ model User {
   userName      String?   @unique
   password      String?
   accounts      Account[]
+  posts         Post[]
 }
 
 model Account {
@@ -41,4 +42,15 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+model Post {
+  id            BigInt    @id @unique @default(autoincrement())
+  topicId       BigInt?
+  parentId      BigInt?
+  createdAt     DateTime  @default(now())
+  authorId      String
+  title         String
+  body          String    @db.Text
+  user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
 }
