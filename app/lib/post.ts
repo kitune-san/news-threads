@@ -28,6 +28,8 @@ export type State = {
         body?: string[];
     };
     message?: string | null;
+    topic_id?: number | null;
+    parent_id?: number | null;
 };
 
 export async function newPost(prevState: State, formData: FormData) {
@@ -71,6 +73,53 @@ export async function newPost(prevState: State, formData: FormData) {
 
     revalidatePath('/');
     redirect('/');
+}
+
+export async function newComment(prevState: State, formData: FormData) {
+    const session = await auth();
+
+    if (session?.user == null) {
+        return {
+            message: 'Please sign in.',
+        }
+    }
+    
+    const validatedPost = NewPost.safeParse({
+        authorId: session.user.id,
+        title: formData.get('title'),
+        body: formData.get('body')
+    });
+
+    if (!validatedPost.success) {
+        return {
+            errors: validatedPost.error.flatten().fieldErrors,
+            message: 'Failed to post.'
+        };
+    }
+
+    const { authorId, title, body } = validatedPost.data;
+ 
+    try {
+        await prisma.post.create({
+            data: {
+                topicId: prevState.topic_id,
+                parentId: prevState.parent_id,
+                authorId: authorId,
+                title: title,
+                body: body
+            },
+        });
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            return 'Something went wrong.';
+        }
+        throw error;
+    }
+
+    revalidatePath(`/${prevState.topic_id}`);
+    //redirect(`/${prevState.topic_id}`);
+
+    return prevState;
 }
 
 export async function fetchLatestPosts(page: number) {

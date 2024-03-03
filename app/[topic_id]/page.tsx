@@ -1,4 +1,5 @@
 import { fetchPost, fetchComments } from "@/app/lib/post";
+import CommentForm from "@/app/components/comment";
 import CommentView from "@/app/components/comment-view";
 import { pages } from "next/dist/build/templates/app-page";
 
@@ -17,6 +18,9 @@ export default async function Page({ params }: {params: { topic_id: string} })
             </div>
             <div>
                 <span>{post?.body}</span>
+            </div>
+            <div>
+                <CommentForm topic_id={id} parent_id={id} />
             </div>
             <div>
                 <CommentView parent_id={id} comments={comments}/>

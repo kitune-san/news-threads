@@ -1,4 +1,5 @@
 import { Post } from '@prisma/client';
+import CommentForm from '@/app/components/comment';
 
 export default function CommentView({ parent_id, comments }: { parent_id: number, comments: Post[]})
 {
@@ -7,7 +8,7 @@ export default function CommentView({ parent_id, comments }: { parent_id: number
     if (child_comments.length === 0) return (<></>);
    
     return (
-        <div className='ml-5'>
+        <div className='ml-10 border-2 border-black'>
             {child_comments.map((comment) => {
                 return (
                     <div key={comment.id}>
@@ -20,7 +21,9 @@ export default function CommentView({ parent_id, comments }: { parent_id: number
                         <div>
                             <span>{comment?.body}</span>
                         </div>
-                        <div>
+                        <div  className='mb-5'>
+                            {comment.topicId && 
+                            <CommentForm topic_id={comment.topicId} parent_id={comment.id} />}
                         </div>
                         <div>
                             <CommentView parent_id={comment.id} comments={comments}/>
