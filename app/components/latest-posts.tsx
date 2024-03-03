@@ -9,7 +9,7 @@ export default async function LatestPosts() {
             {latestPosts.map((post) => {
                 return (
                     <div key={post.id}>
-                        <Link href={`/${post.id}`}>{post.createdAt.toDateString()}: {post.title}</Link>
+                        <Link href={`/topic/${post.id}`}>{post.createdAt.toDateString()}: {post.title}</Link>
                     </div>
                 );
             })}

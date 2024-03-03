@@ -3,9 +3,9 @@ import CommentForm from "@/app/components/comment";
 import CommentView from "@/app/components/comment-view";
 import { pages } from "next/dist/build/templates/app-page";
 
-export default async function Page({ params }: {params: { topic_id: string} })
+export default async function Page({ params }: {params: { id: string} })
 {
-    const id = parseInt(params.topic_id);
+    const id = parseInt(params.id);
     const [post, comments] = await Promise.all([fetchPost(id),  fetchComments(id, 0)]);
 
     return (
