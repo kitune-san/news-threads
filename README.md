@@ -1,3 +1,19 @@
+スレッド型のニュースサイトを作ってみようというこころみ。
+夢半ばで挫折
+
+Next.js + Prisma(PostgreSQL) + NextAuth の組み合わせ。
+
+## TOP画面
+こんな感じ
+
+![TOP](doc/img/top.png)
+
+## コメント画面
+こんな感じ
+
+![Comment-tree](doc/img/comment-tree.png)
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
