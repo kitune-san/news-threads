@@ -4,7 +4,9 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { PrismaClient, Prisma } from "@prisma/client";
 import { auth } from "@/auth";
-import { z } from 'zod';
+import { number, z } from 'zod';
+import { unstable_noStore as noStore } from 'next/cache';
+import { comment } from 'postcss';
 
 const prisma = new PrismaClient();
 
@@ -69,4 +71,45 @@ export async function newPost(prevState: State, formData: FormData) {
 
     revalidatePath('/');
     redirect('/');
+}
+
+export async function fetchLatestPosts(page: number) {
+    noStore();
+    const perPage = 10;
+    const skip = perPage * page;
+
+    const posts = await prisma.post.findMany({
+        skip: skip,
+        take: perPage,
+        where: {
+            topicId: null,
+        }
+    });
+    return posts;
+}
+
+export async function fetchPost(id: number)
+{
+    noStore();
+    const post = await prisma.post.findFirst({
+        where: {
+            id: id
+        }
+    })
+    return post;
+}
+
+export async function fetchComments(id: number, page: number) {
+    noStore();
+    const perPage = 50;
+    const skip = perPage * page;
+
+    const comments = await prisma.post.findMany({
+        skip: skip,
+        take: perPage,
+        where: {
+            topicId: id,
+        }
+    });
+    return comments;
 }
