@@ -132,7 +132,10 @@ export async function fetchLatestPosts(page: number) {
         take: perPage,
         where: {
             topicId: null,
-        }
+        },
+        orderBy: [{
+            createdAt: 'desc',
+        }]
     });
     return posts;
 }
