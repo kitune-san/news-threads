@@ -45,9 +45,9 @@ model Account {
 }
 
 model Post {
-  id            BigInt    @id @unique @default(autoincrement())
-  topicId       BigInt?
-  parentId      BigInt?
+  id            Int       @id @unique @default(autoincrement())
+  topicId       Int?
+  parentId      Int?
   createdAt     DateTime  @default(now())
   authorId      String
   title         String
