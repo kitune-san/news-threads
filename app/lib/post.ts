@@ -2,13 +2,13 @@
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { PrismaClient, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import prisma from "@/db";
 import { auth } from "@/auth";
 import { number, z } from 'zod';
 import { unstable_noStore as noStore } from 'next/cache';
 import { comment } from 'postcss';
 
-const prisma = new PrismaClient();
 
 const FormSchema = z.object({
     authorId: z.string(),

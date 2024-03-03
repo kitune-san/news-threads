@@ -5,14 +5,12 @@ import GitHub from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { Adapter, AdapterUser } from "next-auth/adapters";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/db";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import { z } from 'zod';
 
 import bcrypt from 'bcrypt';
-
-const prisma = new PrismaClient();
 
 export const customAdapter: Adapter = {
   ...PrismaAdapter(prisma),
