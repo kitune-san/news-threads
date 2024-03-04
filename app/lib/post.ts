@@ -116,8 +116,8 @@ export async function newComment(prevState: State, formData: FormData) {
         throw error;
     }
 
-    revalidatePath(`/${prevState.topic_id}`);
-    //redirect(`/${prevState.topic_id}`);
+    revalidatePath(`/topic/${prevState.topic_id}`);
+    //redirect(`/topic/${prevState.topic_id}`);
 
     return prevState;
 }
