@@ -2,7 +2,7 @@
 import { newComment } from "@/app/lib/post";
 import { useFormState } from 'react-dom';
 
-export default function CommentForm({ topic_id, parent_id } : { topic_id: number, parent_id: number }) {
+export default function CommentForm({ topic_id, parent_id } : { topic_id: number, parent_id: number | null}) {
     const initialState = { errors: {}, message: null, topic_id: topic_id, parent_id: parent_id };
     const [state, dispatch] = useFormState(newComment, initialState);
 

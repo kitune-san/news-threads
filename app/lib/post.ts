@@ -7,7 +7,7 @@ import prisma from "@/db";
 import { auth } from "@/auth";
 import { number, z } from 'zod';
 import { unstable_noStore as noStore } from 'next/cache';
-import { Post, Comment } from '@/app/lib/definitions';
+import { Topic, Comment } from '@/app/lib/definitions';
 
 const FormSchema = z.object({
     authorId: z.string(),
@@ -31,9 +31,10 @@ export type State = {
     parent_id?: number | null;
 };
 
-export async function newPost(prevState: State, formData: FormData) {
+export async function newTopic(prevState: State, formData: FormData) {
     const session = await auth();
 
+    // TODO: validation
     if (session?.user == null) {
         return {
             message: 'Please sign in.',
@@ -56,7 +57,7 @@ export async function newPost(prevState: State, formData: FormData) {
     const { authorId, title, body } = validatedPost.data;
  
     try {
-        await prisma.post.create({
+        await prisma.topic.create({
             data: {
                 authorId: authorId,
                 title: title,
@@ -69,7 +70,7 @@ export async function newPost(prevState: State, formData: FormData) {
         }
         throw error;
     }
-
+   
     revalidatePath('/');
     redirect('/');
 }
@@ -77,9 +78,16 @@ export async function newPost(prevState: State, formData: FormData) {
 export async function newComment(prevState: State, formData: FormData) {
     const session = await auth();
 
+    // TODO: validation
     if (session?.user == null) {
         return {
             message: 'Please sign in.',
+        }
+    }
+
+    if (prevState.topic_id == null) {
+        return {
+            message: 'Topic error',
         }
     }
     
@@ -99,7 +107,7 @@ export async function newComment(prevState: State, formData: FormData) {
     const { authorId, title, body } = validatedPost.data;
  
     try {
-        await prisma.post.create({
+        await prisma.comment.create({
             data: {
                 topicId: prevState.topic_id,
                 parentId: prevState.parent_id,
@@ -121,18 +129,16 @@ export async function newComment(prevState: State, formData: FormData) {
     return prevState;
 }
 
-export async function fetchLatestPosts(page: number) : Promise<Post[]> {
+export async function fetchLatestTopics(page: number) : Promise<Topic[]> {
     noStore();
     const perPage = 10;
     const skip = perPage * page;
 
-    const posts = await prisma.post.findMany({
+    const topics = await prisma.topic.findMany({
         skip: skip,
         take: perPage,
         select : {
             id: true,
-            topicId: true,
-            parentId: true,
             createdAt: true,
             title: true,
             body: true,
@@ -143,23 +149,18 @@ export async function fetchLatestPosts(page: number) : Promise<Post[]> {
                 }
             }
         },
-        where: {
-            topicId: null,
-        },
         orderBy: [{
             createdAt: 'desc',
         }]
     });
-    return posts;
+    return topics;
 }
 
-export async function fetchPost(id: number) : Promise<Post> {
+export async function fetchPost(id: number) : Promise<Topic> {
     noStore();
-    const post = await prisma.post.findFirst({
+    const topic = await prisma.topic.findFirst({
         select : {
             id: true,
-            topicId: true,
-            parentId: true,
             createdAt: true,
             title: true,
             body: true,
@@ -174,7 +175,7 @@ export async function fetchPost(id: number) : Promise<Post> {
             id: id
         }
     })
-    return post;
+    return topic;
 }
 
 export async function fetchComments(id: number, page: number) : Promise<Comment[]> {
@@ -182,7 +183,7 @@ export async function fetchComments(id: number, page: number) : Promise<Comment[
     const perPage = 50;
     const skip = perPage * page;
 
-    const comments = await prisma.post.findMany({
+    const comments = await prisma.comment.findMany({
         skip: skip,
         take: perPage,
         select : {

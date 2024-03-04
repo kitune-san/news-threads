@@ -1,8 +1,8 @@
 import Link from 'next/link'
-import { fetchLatestPosts } from "@/app/lib/post";
+import { fetchLatestTopics } from "@/app/lib/post";
 
-export default async function LatestPosts() {
-    const latestPosts = await fetchLatestPosts(0);
+export default async function LatestTopics() {
+    const latestPosts = await fetchLatestTopics(0);
 
     if (!latestPosts.length) return (<div><p>もうない</p></div>);
 

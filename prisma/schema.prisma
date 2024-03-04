@@ -22,7 +22,8 @@ model User {
   userName      String?   @unique
   password      String?
   accounts      Account[]
-  posts         Post[]
+  topics        Topic[]
+  comments      Comment[]
 }
 
 model Account {
@@ -44,13 +45,24 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-model Post {
+model Topic {
   id            Int       @id @unique @default(autoincrement())
-  topicId       Int?
+  createdAt     DateTime  @default(now())
+  authorId      String
+  title         String
+  body          String    @db.Text
+  comments      Comment[]
+  user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
+}
+
+model Comment {
+  id            Int       @id @unique @default(autoincrement())
+  topicId       Int
   parentId      Int?
   createdAt     DateTime  @default(now())
   authorId      String
   title         String
   body          String    @db.Text
   user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  topc Topic @relation(fields: [topicId], references: [id], onDelete: SetNull)
 }

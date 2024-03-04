@@ -1,7 +1,7 @@
 import CommentForm from '@/app/components/comment';
 import { Comment } from '@/app/lib/definitions';
 
-export default function CommentView({ parent_id, comments }: { parent_id: number, comments: Comment[]})
+export default function CommentView({ parent_id, comments }: { parent_id: number | null, comments: Comment[]})
 {
     const child_comments = comments.filter(comment => comment?.parentId === parent_id);
 

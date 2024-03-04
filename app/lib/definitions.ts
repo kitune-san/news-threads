@@ -1,8 +1,6 @@
 
-export type Post = {
+export type Topic = {
     id: number;
-    topicId: number | null;
-    parentId: number | null;
     createdAt: Date;
     title: string;
     body: string;

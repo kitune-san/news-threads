@@ -1,10 +1,10 @@
 'use client'
-import { newPost } from "@/app/lib/post";
+import { newTopic } from "@/app/lib/post";
 import { useFormState } from 'react-dom';
 
 export default function Page() {
     const initialState = { errors: {}, message: null };
-    const [state, dispatch] = useFormState(newPost, initialState);
+    const [state, dispatch] = useFormState(newTopic, initialState);
     
     return (
         <>

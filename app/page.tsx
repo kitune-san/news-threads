@@ -1,13 +1,13 @@
 import Image from "next/image";
 import { Suspense } from 'react';
-import LatestPosts from '@/app/components/latest-posts'
+import LatestTopics from '@/app/components/latest-topics'
 
 export default async function Home() {
   return (
     <main>
       <div>
         <div>
-          <LatestPosts />
+          <LatestTopics />
         </div>
       </div>
     </main>
