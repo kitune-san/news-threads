@@ -8,9 +8,15 @@ export default async function LatestPosts() {
         <div>
             {latestPosts.map((post) => {
                 return (post &&
-                    <div key={post.id}>
-                        <Link href={`/topic/${post.id}`}>{post.title}</Link>
-                        <p>by {post.user.userName} ({post.authorId}) {post.createdAt.toDateString()}</p>
+                    <div key={post.id} className='mb-1 border-2 border-black'>
+                        <div className='border-2 border-black'>
+                            <Link href={`/topic/${post.id}`}>{post.title}</Link>
+                        </div>
+                        <p>by {post.user.userName} (ID:{post.authorId}) {post.createdAt.toDateString()}</p>
+                        <div>
+                            <p className='bodytext'>{post.body}</p>
+                        </div>
+                        <Link className='border-2 border-black' href={`/topic/${post.id}`}>Read topic and comments</Link>
                     </div>
                 );
             })}

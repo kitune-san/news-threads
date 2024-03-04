@@ -11,15 +11,15 @@ export default function CommentView({ parent_id, comments }: { parent_id: number
         <div className='ml-10 border-2 border-black'>
             {child_comments.map((comment) => {
                 return (comment &&
-                    <div key={comment.id}>
-                        <div>
+                    <div key={comment.id} className='mb-1 border-2 border-black'>
+                        <div className='mb-1 border-2 border-black'>
                             <h1>{comment?.title}</h1>
                         </div>
                         <div>
-                            <p>{comment?.createdAt.toDateString()}</p>
+                        <p>by {comment.user.userName} (ID:{comment.authorId}) {comment.createdAt.toDateString()} #{comment.id}</p>
                         </div>
                         <div>
-                            <span>{comment?.body}</span>
+                            <p className='bodytext'>{comment?.body}</p>
                         </div>
                         <div  className='mb-5'>
                             {comment.topicId && 

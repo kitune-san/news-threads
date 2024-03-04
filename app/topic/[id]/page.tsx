@@ -15,14 +15,16 @@ export default async function Page({ params }: {params: { id: string} })
 
     return (
         <div>
-            <div>
-                <h1>{post?.title}</h1>
-            </div>
-            <div>
-                <p>{post?.createdAt.toDateString()}</p>
-            </div>
-            <div>
-                <span>{post?.body}</span>
+            <div className='mb-1 border-2 border-black'>
+                <div className='mb-1 border-2 border-black'>
+                    <h1>{post?.title}</h1>
+                </div>
+                <div>
+                <p>by {post.user.userName} (ID:{post.authorId}) {post.createdAt.toDateString()}</p>
+                </div>
+                <div>
+                    <p className='bodytext'>{post?.body}</p>
+                </div>
             </div>
             <div>
                 <CommentForm topic_id={topic_id} parent_id={id} />

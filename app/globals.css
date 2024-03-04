@@ -31,3 +31,7 @@ body {
     text-wrap: balance;
   }
 }
+
+.bodytext {
+  white-space: pre-wrap;
+}
