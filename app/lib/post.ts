@@ -7,8 +7,7 @@ import prisma from "@/db";
 import { auth } from "@/auth";
 import { number, z } from 'zod';
 import { unstable_noStore as noStore } from 'next/cache';
-import { comment } from 'postcss';
-
+import { Post, Comment } from '@/app/lib/definitions';
 
 const FormSchema = z.object({
     authorId: z.string(),
@@ -122,7 +121,7 @@ export async function newComment(prevState: State, formData: FormData) {
     return prevState;
 }
 
-export async function fetchLatestPosts(page: number) {
+export async function fetchLatestPosts(page: number) : Promise<Post[]> {
     noStore();
     const perPage = 10;
     const skip = perPage * page;
@@ -130,6 +129,20 @@ export async function fetchLatestPosts(page: number) {
     const posts = await prisma.post.findMany({
         skip: skip,
         take: perPage,
+        select : {
+            id: true,
+            topicId: true,
+            parentId: true,
+            createdAt: true,
+            title: true,
+            body: true,
+            authorId: true,
+            user: {
+                select: {
+                    userName: true
+                }
+            }
+        },
         where: {
             topicId: null,
         },
@@ -140,10 +153,23 @@ export async function fetchLatestPosts(page: number) {
     return posts;
 }
 
-export async function fetchPost(id: number)
-{
+export async function fetchPost(id: number) : Promise<Post> {
     noStore();
     const post = await prisma.post.findFirst({
+        select : {
+            id: true,
+            topicId: true,
+            parentId: true,
+            createdAt: true,
+            title: true,
+            body: true,
+            authorId: true,
+            user: {
+                select: {
+                    userName: true
+                }
+            }
+        },
         where: {
             id: id
         }
@@ -151,7 +177,7 @@ export async function fetchPost(id: number)
     return post;
 }
 
-export async function fetchComments(id: number, page: number) {
+export async function fetchComments(id: number, page: number) : Promise<Comment[]> {
     noStore();
     const perPage = 50;
     const skip = perPage * page;
@@ -159,6 +185,20 @@ export async function fetchComments(id: number, page: number) {
     const comments = await prisma.post.findMany({
         skip: skip,
         take: perPage,
+        select : {
+            id: true,
+            topicId: true,
+            parentId: true,
+            createdAt: true,
+            title: true,
+            body: true,
+            authorId: true,
+            user: {
+                select: {
+                    userName: true
+                }
+            }
+        },
         where: {
             topicId: id,
         }

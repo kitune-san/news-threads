@@ -7,9 +7,10 @@ export default async function LatestPosts() {
     return (
         <div>
             {latestPosts.map((post) => {
-                return (
+                return (post &&
                     <div key={post.id}>
-                        <Link href={`/topic/${post.id}`}>{post.createdAt.toDateString()}: {post.title}</Link>
+                        <Link href={`/topic/${post.id}`}>{post.title}</Link>
+                        <p>by {post.user.userName} ({post.authorId}) {post.createdAt.toDateString()}</p>
                     </div>
                 );
             })}

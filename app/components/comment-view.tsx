@@ -1,16 +1,16 @@
-import { Post } from '@prisma/client';
 import CommentForm from '@/app/components/comment';
+import { Comment } from '@/app/lib/definitions';
 
-export default function CommentView({ parent_id, comments }: { parent_id: number, comments: Post[]})
+export default function CommentView({ parent_id, comments }: { parent_id: number, comments: Comment[]})
 {
-    const child_comments = comments.filter(comment => comment.parentId === parent_id);
+    const child_comments = comments.filter(comment => comment?.parentId === parent_id);
 
     if (child_comments.length === 0) return (<></>);
    
     return (
         <div className='ml-10 border-2 border-black'>
             {child_comments.map((comment) => {
-                return (
+                return (comment &&
                     <div key={comment.id}>
                         <div>
                             <h1>{comment?.title}</h1>
