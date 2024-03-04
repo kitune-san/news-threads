@@ -16,8 +16,8 @@ const User = async () => {
 
 export default async function Header() {
   return (
-    <header className="sticky flex justify-center border-b">
-      <div className="flex items-center justify-between w-full h-16 max-w-3xl px-4 mx-auto sm:px-6">
+    <header className="justify-center border-b">
+      <div className="flex justify-between">
       <Link href="/">TOP</Link>
         <User />
       </div>
