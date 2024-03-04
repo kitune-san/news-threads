@@ -4,6 +4,8 @@ import { fetchLatestPosts } from "@/app/lib/post";
 export default async function LatestPosts() {
     const latestPosts = await fetchLatestPosts(0);
 
+    if (!latestPosts.length) return (<div><p>もうない</p></div>);
+
     return (
         <div>
             {latestPosts.map((post) => {
