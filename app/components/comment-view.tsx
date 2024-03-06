@@ -1,5 +1,6 @@
 import CommentForm from '@/app/components/comment';
 import { Comment } from '@/app/lib/definitions';
+import { CommentBox } from './ui/post';
 
 export default function CommentView({ parent_id, comments }: { parent_id: number | null, comments: Comment[]})
 {
@@ -8,19 +9,13 @@ export default function CommentView({ parent_id, comments }: { parent_id: number
     if (child_comments.length === 0) return (<></>);
    
     return (
-        <div className='ml-10 border-2 border-black'>
+        <div className='ml-10'>
             {child_comments.map((comment) => {
                 return (comment &&
-                    <div key={comment.id} className='mb-1 border-2 border-black'>
-                        <div className='mb-1 border-2 border-black'>
-                            <h1>{comment?.title}</h1>
-                        </div>
-                        <div>
-                        <p>by {comment.user.userName} (ID:{comment.authorId}) {comment.createdAt.toDateString()} #{comment.id}</p>
-                        </div>
-                        <div>
-                            <p className='bodytext'>{comment?.body}</p>
-                        </div>
+                    <div key={comment.id} className='mb-1 border-2 border-[#AA9D80]'>
+                        <CommentBox title={comment?.title} 
+                            sub={`by ${comment.user.userName} (ID:${comment.authorId}) on ${comment.createdAt.toDateString()} #${comment.id}`}
+                            body={comment?.body}/>
                         <div  className='mb-5'>
                             {comment.topicId && 
                             <CommentForm topic_id={comment.topicId} parent_id={comment.id} />}
