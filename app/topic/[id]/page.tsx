@@ -13,7 +13,7 @@ export default async function Page({ params }: {params: { id: string} })
 
     return (
         <div>
-            <TopicBox title={post.title} href={`/topic/${post.id}`} 
+            <TopicBox key={`comment-${post.id}`} title={post.title} href={`/topic/${post.id}`} 
                 sub={`by ${post.user.userName} (ID:${post.authorId}) ${post.createdAt.toDateString()}`}
                 body={post.body} />
             <div>

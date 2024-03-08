@@ -11,7 +11,7 @@ export default async function LatestTopics() {
         <div>
             {latestPosts.map((post) => {
                 return (post &&
-                    <TopicDigestBox title={post.title} href={`/topic/${post.id}`} 
+                    <TopicDigestBox key={`topic-${post.id}`} title={post.title} href={`/topic/${post.id}`} 
                         sub={`by ${post.user.userName} (ID:${post.authorId}) ${post.createdAt.toDateString()}`}
                         body={post.body} message='Read topic and comments'/>
                 );
