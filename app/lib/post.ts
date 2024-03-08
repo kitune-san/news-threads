@@ -20,18 +20,16 @@ const FormSchema = z.object({
 });
 const NewPost = FormSchema;
 
-export type State = {
+export type createTopicState = {
     errors?: {
         authorId?: string[];
         title?: string[];
         body?: string[];
     };
     message?: string | null;
-    topic_id?: number | null;
-    parent_id?: number | null;
 };
 
-export async function newTopic(prevState: State, formData: FormData) {
+export async function createTopic(prevState: createTopicState, formData: FormData) {
     const session = await auth();
 
     // TODO: validation
@@ -66,27 +64,44 @@ export async function newTopic(prevState: State, formData: FormData) {
         });
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            return 'Something went wrong.';
+            return {
+                message: 'Something went wrong.'
+            };
         }
         throw error;
     }
    
     revalidatePath('/');
     redirect('/');
+
+    return prevState;
 }
 
-export async function newComment(prevState: State, formData: FormData) {
+export type createCommentState = {
+    errors?: {
+        authorId?: string[];
+        title?: string[];
+        body?: string[];
+    };
+    message?: string | null;
+    topic_id?: number | null;
+    parent_id?: number | null;
+}
+
+export async function createComment(prevState: createCommentState, formData: FormData) {
     const session = await auth();
 
     // TODO: validation
     if (session?.user == null) {
         return {
+            ...prevState,
             message: 'Please sign in.',
         }
     }
 
     if (prevState.topic_id == null) {
         return {
+            ...prevState,
             message: 'Topic error',
         }
     }
@@ -99,8 +114,9 @@ export async function newComment(prevState: State, formData: FormData) {
 
     if (!validatedPost.success) {
         return {
+            ...prevState,
             errors: validatedPost.error.flatten().fieldErrors,
-            message: 'Failed to post.'
+            message: 'Failed to comment.'
         };
     }
 
@@ -118,7 +134,10 @@ export async function newComment(prevState: State, formData: FormData) {
         });
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            return 'Something went wrong.';
+            return {
+                ...prevState,
+                message :'Database Error: Failed to comment.'
+            };
         }
         throw error;
     }

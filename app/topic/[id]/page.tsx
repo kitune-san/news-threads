@@ -1,5 +1,5 @@
 import { fetchPost, fetchComments } from '@/app/lib/post';
-import CommentForm from '@/app/components/comment';
+import CommentForm from '@/app/components/comment-form';
 import CommentView from '@/app/components/comment-view';
 import { pages } from 'next/dist/build/templates/app-page';
 import { TopicBox } from '@/app/components/ui/post';

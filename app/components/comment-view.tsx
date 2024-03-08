@@ -1,6 +1,6 @@
-import CommentForm from '@/app/components/comment';
+import CommentForm from '@/app/components/comment-form';
 import { Comment } from '@/app/lib/definitions';
-import { CommentBox } from './ui/post';
+import { CommentBox } from '@/app/components/ui/post';
 
 export default function CommentView({ parent_id, comments }: { parent_id: number | null, comments: Comment[]})
 {
