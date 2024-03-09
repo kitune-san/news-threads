@@ -2,8 +2,8 @@ import Link from 'next/link'
 import { fetchLatestTopics } from '@/app/lib/post';
 import { TopicDigestBox } from '@/app/components/ui/post';
 
-export default async function LatestTopics() {
-    const latestPosts = await fetchLatestTopics(0);
+export default async function TopicsView({page} : {page: number}) {
+    const latestPosts = await fetchLatestTopics(page);
 
     if (!latestPosts.length) return (<div><p>もうない</p></div>);
 

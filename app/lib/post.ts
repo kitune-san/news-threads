@@ -150,7 +150,7 @@ export async function createComment(prevState: createCommentState, formData: For
 
 export async function fetchLatestTopics(page: number) : Promise<Topic[]> {
     noStore();
-    const perPage = 10;
+    const perPage = 15;
     const skip = perPage * page;
 
     const topics = await prisma.topic.findMany({

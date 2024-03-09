@@ -1,15 +1,23 @@
 import Image from "next/image";
 import { Suspense } from 'react';
-import LatestTopics from '@/app/components/latest-topics'
+import TopicsView from '@/app/components/topics-view'
+import Pagination from "@/app/components/ui/pagination";
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: {
+    query?: string;
+    page?: string;
+  }
+}) {
+  const query = searchParams?.query || '';
+  const currentPage = Number(searchParams?.page || 0);
+
   return (
     <main>
-      <div>
-        <div>
-          <LatestTopics />
-        </div>
-      </div>
+      <TopicsView page={currentPage}/>
+      <Pagination />
     </main>
   );
 }
