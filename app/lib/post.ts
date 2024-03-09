@@ -6,7 +6,6 @@ import { Prisma } from "@prisma/client";
 import prisma from "@/db";
 import { auth } from "@/auth";
 import { number, z } from 'zod';
-import { unstable_noStore as noStore } from 'next/cache';
 import { Topic, Comment } from '@/app/lib/definitions';
 
 const FormSchema = z.object({
@@ -149,7 +148,6 @@ export async function createComment(prevState: createCommentState, formData: For
 }
 
 export async function fetchLatestTopics(page: number) : Promise<Topic[]> {
-    noStore();
     const perPage = 15;
     const skip = perPage * page;
 
@@ -184,8 +182,6 @@ export async function fetchLatestTopics(page: number) : Promise<Topic[]> {
 }
 
 export async function fetchPost(id: number) : Promise<Topic> {
-    noStore();
-
     try {
         const topic = await prisma.topic.findFirst({
             select : {
@@ -215,8 +211,6 @@ export async function fetchPost(id: number) : Promise<Topic> {
 }
 
 export async function fetchComments(id: number, getNum: number | undefined) : Promise<Comment[]> {
-    noStore();
-    
     try {
         const comments = await prisma.comment.findMany({
             take: getNum,
