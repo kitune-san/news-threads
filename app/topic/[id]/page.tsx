@@ -24,7 +24,7 @@ export default async function Page({
     return (
         <div>
             <TopicBox key={`comment-${post.id}`} title={post.title} href={`/topic/${post.id}`} 
-                sub={`by ${post.user.userName} (ID:${post.authorId}) ${post.createdAt.toDateString()}`}
+                sub={`by ${post.user.userName} (ID:${post.authorId}) ${new Date(post.createdAt).toString()}`}
                 body={post.body} />
             <LoadAllButton />
             <div>

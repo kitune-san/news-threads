@@ -6,13 +6,13 @@ export default async function TopicsView({page} : {page: number}) {
     const latestPosts = await fetchLatestTopics(page);
 
     if (!latestPosts.length) return (<div><p>もうない</p></div>);
-
+    
     return (
         <div>
             {latestPosts.map((post) => {
                 return (post &&
                     <TopicDigestBox key={`topic-${post.id}`} title={post.title} href={`/topic/${post.id}`} 
-                        sub={`by ${post.user.userName} (ID:${post.authorId}) ${post.createdAt.toDateString()}`}
+                        sub={`by ${post.user.userName} (ID:${post.authorId}) ${new Date(post.createdAt).toString()}`}
                         body={post.body} message='Read topic and comments'/>
                 );
             })}
