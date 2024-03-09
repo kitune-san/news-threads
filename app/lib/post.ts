@@ -214,15 +214,12 @@ export async function fetchPost(id: number) : Promise<Topic> {
     }
 }
 
-export async function fetchComments(id: number, page: number) : Promise<Comment[]> {
+export async function fetchComments(id: number, getNum: number | undefined) : Promise<Comment[]> {
     noStore();
-    const perPage = 50;
-    const skip = perPage * page;
-
+    
     try {
         const comments = await prisma.comment.findMany({
-            skip: skip,
-            take: perPage,
+            take: getNum,
             select : {
                 id: true,
                 topicId: true,
