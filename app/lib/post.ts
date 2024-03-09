@@ -1,6 +1,6 @@
 'use server'
 
-import { revalidatePath } from 'next/cache';
+import { unstable_cache, revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { Prisma } from "@prisma/client";
 import prisma from "@/db";
@@ -147,7 +147,7 @@ export async function createComment(prevState: createCommentState, formData: For
     return prevState;
 }
 
-export async function fetchLatestTopics(page: number) : Promise<Topic[]> {
+async function fetchLatestTopicsNoStore(page: number) : Promise<Topic[]> {
     const perPage = 15;
     const skip = perPage * page;
 
@@ -180,8 +180,9 @@ export async function fetchLatestTopics(page: number) : Promise<Topic[]> {
         }
     }
 }
+export const fetchLatestTopics = unstable_cache(fetchLatestTopicsNoStore);
 
-export async function fetchPost(id: number) : Promise<Topic> {
+async function fetchPostNoStore(id: number) : Promise<Topic> {
     try {
         const topic = await prisma.topic.findFirst({
             select : {
@@ -209,8 +210,9 @@ export async function fetchPost(id: number) : Promise<Topic> {
         }
     }
 }
+export const fetchPost = unstable_cache(fetchPostNoStore);
 
-export async function fetchComments(id: number, getNum: number | undefined) : Promise<Comment[]> {
+async function fetchCommentsNoStore(id: number, getNum: number | undefined) : Promise<Comment[]> {
     try {
         const comments = await prisma.comment.findMany({
             take: getNum,
@@ -241,3 +243,4 @@ export async function fetchComments(id: number, getNum: number | undefined) : Pr
         }
     }
 }
+export const fetchComments = unstable_cache(fetchCommentsNoStore);
