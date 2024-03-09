@@ -65,7 +65,7 @@ export async function createTopic(prevState: createTopicState, formData: FormDat
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             return {
-                message: 'Something went wrong.'
+                message: 'Database Error: Failed to Error.'
             };
         }
         throw error;
@@ -153,48 +153,65 @@ export async function fetchLatestTopics(page: number) : Promise<Topic[]> {
     const perPage = 15;
     const skip = perPage * page;
 
-    const topics = await prisma.topic.findMany({
-        skip: skip,
-        take: perPage,
-        select : {
-            id: true,
-            createdAt: true,
-            title: true,
-            body: true,
-            authorId: true,
-            user: {
-                select: {
-                    userName: true
+    try {
+        const topics = await prisma.topic.findMany({
+            skip: skip,
+            take: perPage,
+            select : {
+                id: true,
+                createdAt: true,
+                title: true,
+                body: true,
+                authorId: true,
+                user: {
+                    select: {
+                        userName: true
+                    }
                 }
-            }
-        },
-        orderBy: [{
-            createdAt: 'desc',
-        }]
-    });
-    return topics;
+            },
+            orderBy: [{
+                createdAt: 'desc',
+            }]
+        });
+        return topics;
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            return [];
+        } else {
+            throw error;
+        }
+    }
 }
 
 export async function fetchPost(id: number) : Promise<Topic> {
     noStore();
-    const topic = await prisma.topic.findFirst({
-        select : {
-            id: true,
-            createdAt: true,
-            title: true,
-            body: true,
-            authorId: true,
-            user: {
-                select: {
-                    userName: true
+
+    try {
+        const topic = await prisma.topic.findFirst({
+            select : {
+                id: true,
+                createdAt: true,
+                title: true,
+                body: true,
+                authorId: true,
+                user: {
+                    select: {
+                        userName: true
+                    }
                 }
+            },
+            where: {
+                id: id
             }
-        },
-        where: {
-            id: id
+        })
+        return topic;
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            return null;
+        } else {
+            throw error;
         }
-    })
-    return topic;
+    }
 }
 
 export async function fetchComments(id: number, page: number) : Promise<Comment[]> {
@@ -202,26 +219,34 @@ export async function fetchComments(id: number, page: number) : Promise<Comment[
     const perPage = 50;
     const skip = perPage * page;
 
-    const comments = await prisma.comment.findMany({
-        skip: skip,
-        take: perPage,
-        select : {
-            id: true,
-            topicId: true,
-            parentId: true,
-            createdAt: true,
-            title: true,
-            body: true,
-            authorId: true,
-            user: {
-                select: {
-                    userName: true
+    try {
+        const comments = await prisma.comment.findMany({
+            skip: skip,
+            take: perPage,
+            select : {
+                id: true,
+                topicId: true,
+                parentId: true,
+                createdAt: true,
+                title: true,
+                body: true,
+                authorId: true,
+                user: {
+                    select: {
+                        userName: true
+                    }
                 }
+            },
+            where: {
+                topicId: id,
             }
-        },
-        where: {
-            topicId: id,
+        });
+        return comments;
+    } catch (error) {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            return [];
+        } else {
+            throw error;
         }
-    });
-    return comments;
+    }
 }
