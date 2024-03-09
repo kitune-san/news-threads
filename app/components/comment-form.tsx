@@ -1,8 +1,9 @@
 'use client'
+import { useState } from 'react';
 import { useFormState } from 'react-dom';
 import { createComment } from '@/app/lib/post';
 
-export default function CommentForm({ topic_id, parent_id } : { topic_id: number, parent_id: number | null}) {
+function VisbleCommentForm({ topic_id, parent_id } : { topic_id: number, parent_id: number | null}) {
     const initialState = { errors: {}, message: null, topic_id: topic_id, parent_id: parent_id };
     const [state, dispatch] = useFormState(createComment, initialState);
 
@@ -49,3 +50,17 @@ export default function CommentForm({ topic_id, parent_id } : { topic_id: number
     );
 }
 
+export default function CommentForm({ topic_id, parent_id } : { topic_id: number, parent_id: number | null}) {
+    const [clicked, setClicked] = useState(false);
+
+    const handleClick = () => {
+        return setClicked(!clicked);
+    };
+
+    return (
+        <div>
+            <button type="button" onClick={handleClick} className='ml-1 mt-1 pl-2 pr-2 rounded-md border-2 border-[#AA9D80] bg-[#E8D8B8]'>Reply to this</button>
+            { clicked === true ? <VisbleCommentForm topic_id={topic_id} parent_id={parent_id}/>: <></>}
+        </div>
+    );
+}
