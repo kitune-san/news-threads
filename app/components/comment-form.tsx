@@ -8,6 +8,8 @@ function VisbleCommentForm({ topic_id, parent_id, title_value } : { topic_id: nu
     const initialState = { errors: {}, message: null, topic_id: topic_id, parent_id: parent_id };
     const [state, dispatch] = useFormState(createComment, initialState);
 
+    const [titleState, setTitle] = useState(title_value);
+
     useEffect(() => {
         if (ref.current && state.message === 'success') {
             ref.current.reset();
@@ -20,7 +22,8 @@ function VisbleCommentForm({ topic_id, parent_id, title_value } : { topic_id: nu
                 <div>
                     <label className='font-medium'>Title:</label>
                 </div>
-                <input name='title' type='text' placeholder='Title' value={title_value} className='block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm'/>
+                <input name='title' type='text' placeholder='Title' value={titleState}
+                    onChange={(e) => setTitle(e.target.value)} className='block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm'/>
                 <div id='title-error'>
                     {state.errors?.title && state.errors?.title.map((error: string) => (
                         <p key={error} className='text-red-500'>{error}</p>
