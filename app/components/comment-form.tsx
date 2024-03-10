@@ -1,14 +1,21 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 import { createComment } from '@/app/lib/post';
 
 function VisbleCommentForm({ topic_id, parent_id } : { topic_id: number, parent_id: number | null}) {
+    const ref = useRef<HTMLFormElement>(null);
     const initialState = { errors: {}, message: null, topic_id: topic_id, parent_id: parent_id };
     const [state, dispatch] = useFormState(createComment, initialState);
 
+    useEffect(() => {
+        if (ref.current && state.message === 'success') {
+            ref.current.reset();
+        }
+    }, [state.message])
+
     return (
-        <form action={dispatch} className='px-2'>
+        <form ref={ref} action={dispatch} className='px-2'>
             <div aria-describedby='title-error'>
                 <div>
                     <label className='font-medium'>Title:</label>

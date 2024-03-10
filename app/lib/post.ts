@@ -87,20 +87,25 @@ export type createCommentState = {
     parent_id?: number | null;
 }
 
-export async function createComment(prevState: createCommentState, formData: FormData) {
+export async function createComment(prevState: createCommentState, formData: FormData) : Promise<createCommentState> {
     const session = await auth();
+
+    const commentInfo = {
+        topic_id: prevState.topic_id,
+        parent_id: prevState.parent_id
+    }
 
     // TODO: validation
     if (session?.user == null) {
         return {
-            ...prevState,
+            ...commentInfo,
             message: 'Please sign in.',
         }
     }
 
-    if (prevState.topic_id == null) {
+    if (commentInfo.topic_id == null) {
         return {
-            ...prevState,
+            ...commentInfo,
             message: 'Topic error',
         }
     }
@@ -113,7 +118,7 @@ export async function createComment(prevState: createCommentState, formData: For
 
     if (!validatedPost.success) {
         return {
-            ...prevState,
+            ...commentInfo,
             errors: validatedPost.error.flatten().fieldErrors,
             message: 'Failed to comment.'
         };
@@ -124,8 +129,8 @@ export async function createComment(prevState: createCommentState, formData: For
     try {
         await prisma.comment.create({
             data: {
-                topicId: prevState.topic_id,
-                parentId: prevState.parent_id,
+                topicId: commentInfo.topic_id,
+                parentId: commentInfo.parent_id,
                 authorId: authorId,
                 title: title,
                 body: body
@@ -134,17 +139,19 @@ export async function createComment(prevState: createCommentState, formData: For
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError) {
             return {
-                ...prevState,
+                ...commentInfo,
                 message :'Database Error: Failed to comment.'
             };
         }
         throw error;
     }
 
-    revalidatePath(`/topic/${prevState.topic_id}`);
-    //redirect(`/topic/${prevState.topic_id}`);
+    revalidatePath(`/topic/${commentInfo.topic_id}`);
 
-    return prevState;
+    return {
+        ...commentInfo,
+        message :'success'
+    };
 }
 
 async function fetchLatestTopicsNoStore(page: number) : Promise<Topic[]> {
