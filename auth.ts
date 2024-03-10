@@ -18,7 +18,7 @@ export const customAdapter: Adapter = {
   getUserByEmail: () => null,
 
   createUser: async (data) => {
-    const user = await prisma.user.create({ data: { ...data, email: null } });
+    const user = await prisma.user.create({ data: { ...data, name: null, email: null, image: null } });
     return user as AdapterUser;
   },
 }
