@@ -18,7 +18,7 @@ export default function CommentView({ parent_id, comments }: { parent_id: number
                             body={comment?.body}/>
                         <div  className='mb-5'>
                             {comment.topicId && 
-                            <CommentForm topic_id={comment.topicId} parent_id={comment.id} />}
+                            <CommentForm topic_id={comment.topicId} parent_id={comment.id} title_value={comment?.title.startsWith('Re:') ? comment?.title : `Re:${comment?.title}`} />}
                         </div>
                         <div>
                             <CommentView parent_id={comment.id} comments={comments}/>

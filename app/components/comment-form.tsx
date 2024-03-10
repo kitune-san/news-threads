@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 import { createComment } from '@/app/lib/post';
 
-function VisbleCommentForm({ topic_id, parent_id } : { topic_id: number, parent_id: number | null}) {
+function VisbleCommentForm({ topic_id, parent_id, title_value } : { topic_id: number, parent_id: number | null, title_value: string}) {
     const ref = useRef<HTMLFormElement>(null);
     const initialState = { errors: {}, message: null, topic_id: topic_id, parent_id: parent_id };
     const [state, dispatch] = useFormState(createComment, initialState);
@@ -20,7 +20,7 @@ function VisbleCommentForm({ topic_id, parent_id } : { topic_id: number, parent_
                 <div>
                     <label className='font-medium'>Title:</label>
                 </div>
-                <input name='title' type='text' placeholder='Title' className='block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm'/>
+                <input name='title' type='text' placeholder='Title' value={title_value} className='block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm'/>
                 <div id='title-error'>
                     {state.errors?.title && state.errors?.title.map((error: string) => (
                         <p key={error} className='text-red-500'>{error}</p>
@@ -57,7 +57,7 @@ function VisbleCommentForm({ topic_id, parent_id } : { topic_id: number, parent_
     );
 }
 
-export default function CommentForm({ topic_id, parent_id } : { topic_id: number, parent_id: number | null}) {
+export default function CommentForm({ topic_id, parent_id, title_value } : { topic_id: number, parent_id: number | null, title_value: string}) {
     const [clicked, setClicked] = useState(false);
 
     const handleClick = () => {
@@ -67,7 +67,7 @@ export default function CommentForm({ topic_id, parent_id } : { topic_id: number
     return (
         <div>
             <button type="button" onClick={handleClick} className='ml-1 mt-1 pl-2 pr-2 rounded-md border-2 border-[#AA9D80] bg-[#E8D8B8]'>Reply to this</button>
-            { clicked === true ? <VisbleCommentForm topic_id={topic_id} parent_id={parent_id}/>: <></>}
+            { clicked === true ? <VisbleCommentForm topic_id={topic_id} parent_id={parent_id} title_value={title_value} /> : <></>}
         </div>
     );
 }

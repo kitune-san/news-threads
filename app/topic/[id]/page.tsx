@@ -18,7 +18,7 @@ export async function Topic({id, getNum} : {id: number, getNum: number | undefin
                 body={post.body} />
             <LoadAllButton />
             <div>
-                <CommentForm topic_id={id} parent_id={null} />
+                <CommentForm topic_id={id} parent_id={null} title_value='' />
             </div>
         </div>
     );
