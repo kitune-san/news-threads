@@ -3,7 +3,7 @@ import { Suspense } from 'react';
 import TopicsView from '@/app/components/topics-view'
 import Pagination from "@/app/components/ui/pagination";
 
-export default async function Home({
+export default function Home({
   searchParams,
 }: {
   searchParams?: {
@@ -16,7 +16,9 @@ export default async function Home({
 
   return (
     <main>
-      <TopicsView page={currentPage}/>
+      <Suspense fallback={<p>Loading topics...</p>}>
+        <TopicsView page={currentPage}/>
+      </Suspense>
       <Pagination />
     </main>
   );

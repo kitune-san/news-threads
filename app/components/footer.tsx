@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-export default async function Footer() {
+export default function Footer() {
     return (
         <footer className='justify-center border-b mt-2'>
             <div className='flex justify-between text-white bg-amber-950'>
