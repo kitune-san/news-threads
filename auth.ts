@@ -78,8 +78,13 @@ export const config = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) token.userName = user.userName;
+      if (trigger === 'update' && session?.userName != null) {
+        //  Note, that `session` can be any arbitrary object, remember to validate it!
+        const data = await prisma.user.findUnique({ select: { userName: true }, where: { id: token.sub }});
+        if (data?.userName != null) token.userName = data?.userName;
+      }
       return token;
     },
     async session({session, token}) {
