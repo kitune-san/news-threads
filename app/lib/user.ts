@@ -60,10 +60,10 @@ export async function updateAccount(prevState: updateAccountState, formData: For
                     message: 'This user name is already used.'
                 }
             }
-            return {
-                message: 'Database Error: Failed to Error.'
-            };
         }
+        return {
+            message: 'Database Error: Failed to Error.'
+        };
     }
     return {message: 'success'};
 }
