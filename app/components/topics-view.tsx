@@ -12,7 +12,7 @@ export default async function TopicsView({page} : {page: number}) {
             {latestPosts.map((post) => {
                 return (post &&
                     <TopicDigestBox key={`topic-${post.id}`} title={post.title} href={`/topic/${post.id}`} 
-                        sub={`by ${post.user.userName} (ID:${post.authorId}) ${new Date(post.createdAt).toString()}`}
+                        sub={`by ${post.user.userName} ${new Date(post.createdAt).toString()}`}
                         body={post.body} message='Read topic and comments'/>
                 );
             })}

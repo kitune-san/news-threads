@@ -14,7 +14,7 @@ export async function Topic({id, getNum} : {id: number, getNum: number | undefin
     return (
         <div>
             <TopicBox key={`comment-${post.id}`} title={post.title} href={`/topic/${post.id}`} 
-                sub={`by ${post.user.userName} (ID:${post.authorId}) ${new Date(post.createdAt).toString()}`}
+                sub={`by ${post.user.userName} ${new Date(post.createdAt).toString()}`}
                 body={post.body} />
             <LoadAllButton />
             <div>
