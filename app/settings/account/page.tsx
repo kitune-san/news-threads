@@ -4,6 +4,12 @@ import { auth } from "@/auth";
 
 export default async function Page() {
     const session = await auth();
+    if (session?.user) {
+        session.user = {
+          userName: session.user.userName,
+        }
+    }
+
     return (
         <div>
             <h1>Account</h1>

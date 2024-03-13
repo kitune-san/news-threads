@@ -5,9 +5,10 @@ import { SessionProvider } from 'next-auth/react';
 
 export default async function Header() {
   const session = await auth();
+  
   if (session?.user) {
     session.user = {
-      name: session.user.name,
+      userName: session.user.userName,
     }
   }
   
