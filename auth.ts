@@ -1,16 +1,34 @@
-import NextAuth from "next-auth"
-import type { NextAuthConfig } from "next-auth"
+import NextAuth from 'next-auth'
+import { JWT } from 'next-auth/jwt'
+import type { DefaultSession, NextAuthConfig } from 'next-auth'
 
-import GitHub from "next-auth/providers/github"
-import CredentialsProvider from "next-auth/providers/credentials";
+import GitHub from 'next-auth/providers/github'
+import CredentialsProvider from 'next-auth/providers/credentials';
 
-import { Adapter, AdapterUser } from "next-auth/adapters";
-import prisma from "@/db";
-import { PrismaAdapter } from "@auth/prisma-adapter";
+import { Adapter, AdapterUser } from 'next-auth/adapters';
+import prisma from '@/db';
+import { PrismaAdapter } from '@auth/prisma-adapter';
 
 import { z } from 'zod';
 
 import bcrypt from 'bcrypt';
+
+declare module 'next-auth' {
+  interface Session extends DefaultSession {
+    user: {
+      userName: string  | null
+    } & DefaultSession['user']
+  }
+  interface User {
+    userName: string | null
+  }
+}
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    userName: string | null
+  }
+}
 
 export const customAdapter: Adapter = {
   ...PrismaAdapter(prisma),
@@ -25,18 +43,18 @@ export const customAdapter: Adapter = {
 
 export const config = {
   adapter: customAdapter,
-  session: { strategy: "jwt" },
+  session: { strategy: 'jwt' },
   providers: [
     GitHub,
     CredentialsProvider({
       credentials: {
         username: {
-          label: "User Name",
-          type: "text",
+          label: 'User Name',
+          type: 'text',
         },
         password: {
-          label: "Password",
-          type: "password"
+          label: 'Password',
+          type: 'password'
         },
       },
       async authorize(credentials) {
@@ -60,8 +78,17 @@ export const config = {
     }),
   ],
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) token.userName = user.userName;
+      return token;
+    },
     async session({session, token}) {
-      if (session.user != null && token.sub != null) session.user.id = token.sub;
+      if (session.user != null) {
+        if (token.sub != null) {
+          session.user.id = token.sub;
+        }
+        session.user.userName = token.userName;
+      }
       return session;
     },
   },
