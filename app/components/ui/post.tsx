@@ -31,7 +31,7 @@ export function TopicDigestBox({ title, href, sub, body, message }: {
         <div className='mb-1 border-2 border-[#AA9D80]'>
             <div className='px-1 py-1'>
                 <PostTitle title={title} href={href} sub={sub} />
-                <p className='bodytext px-2 py-2'>{body.substring(0, 255)}</p>
+                <p className='bodytext px-2 py-2 max-h-96 overflow-hidden'>{body}</p>
                 <div className='flex justify-center'>
                     <Link className='pl-2 pr-2 rounded-md border-2 border-[#AA9D80] bg-[#E8D8B8]' href={href}>{message}</Link>
                 </div>
