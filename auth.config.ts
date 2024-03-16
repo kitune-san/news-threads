@@ -29,6 +29,11 @@ export const authConfig = {
                 if (auth?.user.userName == null && !isOnAccountSettings) {
                     return Response.redirect(new URL('/settings/account', nextUrl));
                 }
+            } else {
+              if (nextUrl.pathname.startsWith('/settings')) {
+                // Redirect unauthenticated users to login page
+                return false;
+              }
             }
             return true;
         }
