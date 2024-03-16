@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.markdown h1 {
+    @apply text-3xl border-b border-[#AA9D80];
+}
+
+.markdown h2 {
+    @apply text-2xl border-b border-[#AA9D80];
+}
+
+.markdown h3 {
+    @apply text-xl border-b border-[#AA9D80];
+}
+
+.markdown hr {
+    @apply h-px my-2 bg-[#AA9D80] border-0
+}
+
+.markdown a {
+    @apply text-blue-600 hover:underline;
+}
+
+.markdown ul {
+    @apply list-disc pl-5;
+}
+
+.markdown ol {
+    @apply list-decimal pl-5;
+}
+
+.markdown blockquote {
+    @apply border-l-4 border-[#AA9D80] bg-[#EBE4D5] pl-2;
+}
+
+.markdown th {
+    @apply border-2 border-[#AA9D80] bg-[#EBE4D5] px-3 py-1;
+}
+  
+.markdown td {
+    @apply border-2 border-[#AA9D80] px-3 py-1;
+}
+
+.markdown pre {
+    @apply border-2 border-[#AA9D80] bg-[#EBE4D5] px-1 py-1
+}
