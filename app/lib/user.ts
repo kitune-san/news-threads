@@ -4,7 +4,7 @@ import prisma from '@/db';
 import { auth } from '@/auth';
 import { number, z } from 'zod';
 
-export type updateAccountState = {
+export type setUserNameState = {
     errors?: {
         userName?: string[];
     };
@@ -20,10 +20,9 @@ const FormSchema = z.object({
 });
 const NewPost = FormSchema;
 
-export async function updateAccount(prevState: updateAccountState, formData: FormData) : Promise<updateAccountState> {
+export async function setNewUserName(prevState: setUserNameState, formData: FormData) : Promise<setUserNameState> {
     const session = await auth();
 
-    // TODO: validation
     if (session?.user == null) {
         return {
             message: 'Please sign in.',
@@ -43,6 +42,26 @@ export async function updateAccount(prevState: updateAccountState, formData: For
     }
 
     const { userId, userName } = validatedAccount.data;
+
+    try {
+        const user = await prisma.user.findUnique({
+            select: {
+                userName: true
+            },
+            where: {
+                id: userId
+            }
+        });
+        if (user?.userName != null) {
+            return {
+                message: 'User name cannot be changed.'
+            }
+        }
+    } catch (error) {
+        return {
+            message: 'Database Error: Failed to Error.'
+        };       
+    }
     
     try {
         await prisma.user.update({
