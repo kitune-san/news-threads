@@ -29,8 +29,15 @@ function CommentTitle({ title, sub }: { title: string, sub: string })
 
 function Body({body}: { body: string })
 {
+    const img = ({...props}) => {
+        return (
+            <></>
+        );
+    };
+
     return (
-        <ReactMarkdown className='markdown' remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+        <ReactMarkdown className='markdown' remarkPlugins={[remarkGfm]}
+            components={{img: img}}>{body}</ReactMarkdown>
     )
 }
 
