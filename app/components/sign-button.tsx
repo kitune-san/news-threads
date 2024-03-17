@@ -16,11 +16,3 @@ export const SignOut = () => {
         </button>
     );
 };
-
-export default function SignButton() {
-    const { data: sesion, status } = useSession();
-
-    if (status === 'loading') return (<p>Loading</p>);
-    if (status === 'authenticated') return <SignOut />
-    return (<SignIn />);
-}

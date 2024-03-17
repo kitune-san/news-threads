@@ -1,30 +1,31 @@
 import { auth } from '@/auth';
 import Link from 'next/link'
-import SignButton from '@/app/components/sign-button'
-import { SessionProvider } from 'next-auth/react';
+import { SignIn, SignOut } from '@/app/components/sign-button'
 
 export default async function Header() {
   const session = await auth();
   
-  if (session?.user) {
-    session.user = {
-      userName: session.user.userName,
-    }
-  }
-  
   return (
-    <header className='justify-center border-b '>
+    <header className='justify-center border-b'>
       <div className='flex justify-center bg-amber-800 text-white text-6xl'>
         <Link href='/'>
           <h1>Title</h1>
         </Link>
       </div>
-      
-      <div className='flex justify-between text-white bg-amber-950'>
-        <Link href='/post'>Post</Link>
-        <SessionProvider session={session}>
-          <SignButton />
-        </SessionProvider>
+
+      <div className='text-white bg-amber-950 px-2'>      
+      { session?.user ?
+        <div className='flex justify-between'>
+          <p>{session.user.userName}</p>
+          <Link href='/post'>Post</Link>
+          <Link href='/settings'>Settings</Link>
+          <SignOut />
+        </div>
+        :
+        <div className='text-right'>
+          <SignIn />
+        </div>
+      }
       </div>
     </header>
   );
