@@ -24,6 +24,7 @@ model User {
   accounts      Account[]
   topics        Topic[]
   comments      Comment[]
+  log           PostLog[]
 }
 
 model Account {
@@ -65,4 +66,16 @@ model Comment {
   body          String    @db.Text
   user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
   topc Topic @relation(fields: [topicId], references: [id], onDelete: SetNull)
+}
+
+model PostLog {
+  id            Int       @id @unique @default(autoincrement())
+  topicId       Int?
+  commentId     Int?
+  authorId      String
+  createdAt     DateTime  @default(now())
+  title         String
+  body          String    @db.Text
+  ip            String
+  user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
 }
