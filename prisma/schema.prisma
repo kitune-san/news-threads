@@ -46,6 +46,14 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model Category {
+  id            Int       @id @unique @default(autoincrement())
+  name          String    @unique
+  description   String?
+  image         String?
+  topics        Topic[]
+}
+
 model Topic {
   id            Int       @id @unique @default(autoincrement())
   createdAt     DateTime  @default(now())
