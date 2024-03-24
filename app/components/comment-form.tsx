@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 import { createComment } from '@/app/lib/post';
+import { CommentBox } from './ui/post';
 
 function VisbleCommentForm({ topic_id, parent_id, title_value } : { topic_id: number, parent_id: number | null, title_value: string}) {
     const ref = useRef<HTMLFormElement>(null);
@@ -9,9 +10,23 @@ function VisbleCommentForm({ topic_id, parent_id, title_value } : { topic_id: nu
     const [state, dispatch] = useFormState(createComment, initialState);
 
     const [titleState, setTitle] = useState(title_value);
+    const [bodyState, setbody] = useState('');
+
+    const initPreview = { visible: false, title: '', body: '' };
+    const [preview, updatePreview] = useState(initPreview);
+    const clickPreviewButton = () => {
+        updatePreview({
+            visible: true,
+            title: titleState,
+            body: bodyState
+        });
+    };
 
     useEffect(() => {
         if (ref.current && state.message === 'success') {
+            setTitle(title_value);
+            setbody('');
+            updatePreview(initPreview)
             ref.current.reset();
         }
     }, [state.message])
@@ -34,7 +49,8 @@ function VisbleCommentForm({ topic_id, parent_id, title_value } : { topic_id: nu
                 <div>
                     <label className='font-medium'>Comment:</label>
                 </div>
-                <textarea name='body' rows={5} className='block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm'/>
+                <textarea name='body' rows={5} value={bodyState}
+                        onChange={(e) => setbody(e.target.value)} className='block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm'/>
                 <div id='body-error'>
                     {state.errors?.body && state.errors?.body.map((error: string) => (
                         <p key={error} className='text-red-500'>{error}</p>
@@ -54,7 +70,11 @@ function VisbleCommentForm({ topic_id, parent_id, title_value } : { topic_id: nu
                     </p>
                 }
                 </div>
-                <button type='submit' className='mt-2 pl-2 pr-2 rounded-md border-2 border-[#AA9D80] bg-[#E8D8B8]'>POST</button>
+                {preview.visible && <div className='mt-2 mb-1 border-2 border-[#AA9D80]'>
+                    <CommentBox title={preview.title} sub='' body={preview.body}/>
+                </div>}
+                <button type='button' onClick={clickPreviewButton} className='mt-2 mr-2 pl-2 pr-2 rounded-md border-2 border-[#AA9D80] bg-[#E8D8B8]'>PREVIEW</button>
+                {preview.visible && <button type='submit' className='mt-2 pl-2 pr-2 rounded-md border-2 border-[#AA9D80] bg-[#E8D8B8]'>POST</button>}
             </div>
         </form>
     );
