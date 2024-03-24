@@ -201,6 +201,9 @@ async function fetchLatestTopicsNoStore(page: number) : Promise<Topic[]> {
                     }
                 }
             },
+            where: {
+                deletedAt: null
+            },
             orderBy: [{
                 createdAt: 'desc',
             }]
@@ -232,7 +235,8 @@ async function fetchPostNoStore(id: number) : Promise<Topic> {
                 }
             },
             where: {
-                id: id
+                id: id,
+                deletedAt: null
             }
         })
         return topic;
@@ -266,6 +270,7 @@ async function fetchCommentsNoStore(id: number, getNum: number | undefined) : Pr
             },
             where: {
                 topicId: id,
+                deletedAt: null
             }
         });
         return comments;

@@ -60,6 +60,7 @@ model Category {
 model Topic {
   id                Int         @id @unique @default(autoincrement())
   createdAt         DateTime    @default(now())
+  deletedAt         DateTime?
   authorId          String
   categoryId        Int
   title             String
@@ -74,6 +75,7 @@ model Comment {
   topicId           Int
   parentId          Int?
   createdAt         DateTime    @default(now())
+  deletedAt         DateTime?
   authorId          String
   title             String
   body              String      @db.Text
