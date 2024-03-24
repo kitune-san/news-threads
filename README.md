@@ -16,6 +16,45 @@ Next.js + Prisma(PostgreSQL) + NextAuth の組み合わせ。
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## 実行環境構築
+
+ソースコードを取得
+
+```bash
+git clone https://github.com/kitune-san/news-threads.git
+cd news-threads
+npm install
+```
+
+PostgreSQLでデータベースを作成
+
+```bash
+createdb -O <username> <database-name>
+```
+
+.env.localを開いて編集
+
+```
+DATABASE_URL="postgresql://<username>:randompassword@localhost:5432/<database-name>?schema=public"
+DATABASE_DIRECT_URL=
+
+AUTH_SECRET= # Linux: `openssl rand -hex 32` or go to https://generate-secret.vercel.app/32
+
+AUTH_GITHUB_ID=<GITHUBから取得>
+AUTH_GITHUB_SECRET=<GITHUBから取得>
+```
+
+```bash
+npx prisma migrate dev
+npx prisma generate
+```
+
+アプリケーションを実行
+
+```bash
+npm run dev
+```
+
 ## Getting Started
 
 First, run the development server:
