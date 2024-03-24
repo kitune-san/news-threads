@@ -1,11 +1,15 @@
 import type { NextAuthConfig } from 'next-auth';
 import prisma from '@/db';
+import { use } from 'react';
  
 export const authConfig = {
     providers: [],
     callbacks: {
         async jwt({ token, user, trigger, session }) {
-          if (user) token.userName = user.userName;
+          if (user) {
+            token.userName = user.userName;
+            token.role = user.role;
+          }
           if (trigger === 'update' && session?.userName != null) {
             //  Note, that `session` can be any arbitrary object, remember to validate it!
             const data = await prisma.user.findUnique({ select: { userName: true }, where: { id: token.sub }});
@@ -19,6 +23,7 @@ export const authConfig = {
               session.user.id = token.sub;
             }
             session.user.userName = token.userName;
+            session.user.role = token.role;
           }
           return session;
         },
@@ -35,6 +40,13 @@ export const authConfig = {
                 return false;
               }
             }
+
+            if (nextUrl.pathname.startsWith('/control_panel')) {
+              if (!isSignIn || auth.user.role != "ADMIN") {
+                return Response.redirect(new URL('/', nextUrl));
+              }
+            }
+
             return true;
         }
     },

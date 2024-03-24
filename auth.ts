@@ -8,22 +8,26 @@ import { authConfig } from '@/auth.config'
 
 import { Adapter, AdapterUser } from 'next-auth/adapters';
 import prisma from '@/db';
+import { Role } from '@/prisma/generated/client'
 import { PrismaAdapter } from '@auth/prisma-adapter';
 
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
-      userName: string  | null
+      userName: string  | null;
+      role: Role;
     } & DefaultSession['user']
   }
   interface User {
-    userName: string | null
+    userName: string | null;
+    role: Role;
   }
 }
 
 declare module 'next-auth/jwt' {
   interface JWT {
-    userName: string | null
+    userName: string | null;
+    role: Role;
   }
 }
 
