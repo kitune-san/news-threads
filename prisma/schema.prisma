@@ -14,80 +14,79 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  userName      String?   @unique
-  password      String?
-  accounts      Account[]
-  topics        Topic[]
-  comments      Comment[]
-  log           PostLog[]
+  id                String      @id @default(cuid())
+  name              String?
+  email             String?     @unique
+  emailVerified     DateTime?
+  image             String?
+  userName          String?     @unique
+  password          String?
+  accounts          Account[]
+  topics            Topic[]
+  comments          Comment[]
+  log               PostLog[]
 }
 
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.Text
-  access_token       String?  @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.Text
-  session_state      String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String      @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?     @db.Text
+  access_token      String?     @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?     @db.Text
+  session_state     String?
+  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
 model Category {
-  id            Int       @id @unique @default(autoincrement())
-  name          String    @unique
-  description   String?
-  image         String?
-  topics        Topic[]
+  id                Int         @id @unique @default(autoincrement())
+  name              String      @unique
+  description       String?
+  image             String?
+  topics            Topic[]
 }
 
 model Topic {
-  id            Int       @id @unique @default(autoincrement())
-  createdAt     DateTime  @default(now())
-  authorId      String
-  categoryId    Int
-  title         String
-  body          String    @db.Text
-  comments      Comment[]
-  user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  category Category @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  id                Int         @id @unique @default(autoincrement())
+  createdAt         DateTime    @default(now())
+  authorId          String
+  categoryId        Int
+  title             String
+  body              String      @db.Text
+  comments          Comment[]
+  user              User        @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  category          Category    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }
 
 model Comment {
-  id            Int       @id @unique @default(autoincrement())
-  topicId       Int
-  parentId      Int?
-  createdAt     DateTime  @default(now())
-  authorId      String
-  title         String
-  body          String    @db.Text
-  user          User      @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  topc          Topic     @relation(fields: [topicId], references: [id], onDelete: SetNull)
-  parent        Comment?  @relation("ParetnChildrens", fields: [parentId], references: [id])
-  childrens     Comment[] @relation("ParetnChildrens")
+  id                Int         @id @unique @default(autoincrement())
+  topicId           Int
+  parentId          Int?
+  createdAt         DateTime    @default(now())
+  authorId          String
+  title             String
+  body              String      @db.Text
+  user              User        @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  topc              Topic       @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  parent            Comment?    @relation("ParetnChildrens", fields: [parentId], references: [id])
+  childrens         Comment[]   @relation("ParetnChildrens")
 }
 
 model PostLog {
-  id            Int       @id @unique @default(autoincrement())
-  topicId       Int?
-  commentId     Int?
-  authorId      String
-  createdAt     DateTime  @default(now())
-  title         String
-  body          String    @db.Text
-  ip            String
-  user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  id                Int         @id @unique @default(autoincrement())
+  topicId           Int?
+  commentId         Int?
+  authorId          String
+  createdAt         DateTime    @default(now())
+  title             String
+  body              String      @db.Text
+  ip                String
+  user              User        @relation(fields: [authorId], references: [id], onDelete: SetNull)
 }
