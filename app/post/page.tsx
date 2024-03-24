@@ -1,10 +1,12 @@
 import TopicForm from "@/app/components/newtopic-form";
+import { fetchCategories } from "@/app/lib/category";
 
-export default function Page() {
-    
+export default async function Page() {
+    const categories = await fetchCategories();
+
     return (
         <div>
-            <TopicForm />
+            <TopicForm categories={categories}/>
         </div>
     );
 }

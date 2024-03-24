@@ -17,14 +17,18 @@ const FormSchema = z.object({
     body: z.string({invalid_type_error: 'Type Error'})
             .min(1, {message: 'Too short'})
             .max(2048, {message: 'Too long'}),
+    categoryId: z.coerce.number({invalid_type_error: 'Please select a category'})
+            .gt(0, {message: 'Please select a category'}),
 });
 const NewPost = FormSchema;
+const NewComment = FormSchema.omit({ categoryId: true });
 
 export type createTopicState = {
     errors?: {
         authorId?: string[];
         title?: string[];
         body?: string[];
+        categoryId?: string[];
     };
     message?: string | null;
 };
@@ -43,7 +47,8 @@ export async function createTopic(prevState: createTopicState, formData: FormDat
     const validatedPost = NewPost.safeParse({
         authorId: session.user.id,
         title: formData.get('title'),
-        body: formData.get('body')
+        body: formData.get('body'),
+        categoryId: formData.get('categoryId')
     });
 
     if (!validatedPost.success) {
@@ -53,7 +58,7 @@ export async function createTopic(prevState: createTopicState, formData: FormDat
         };
     }
 
-    const { authorId, title, body } = validatedPost.data;
+    const { authorId, title, body, categoryId } = validatedPost.data;
  
     try {
         await prisma.$transaction(async (tx) => {
@@ -61,7 +66,8 @@ export async function createTopic(prevState: createTopicState, formData: FormDat
                 data: {
                     authorId: authorId,
                     title: title,
-                    body: body
+                    body: body,
+                    categoryId: categoryId
                 }
             });
             await tx.postLog.create({
@@ -122,7 +128,7 @@ export async function createComment(prevState: createCommentState, formData: For
     }
     const topic_id = commentInfo.topic_id;
     
-    const validatedPost = NewPost.safeParse({
+    const validatedPost = NewComment.safeParse({
         authorId: session.user.id,
         title: formData.get('title'),
         body: formData.get('body')

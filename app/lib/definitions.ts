@@ -29,3 +29,8 @@ export type Category = {
     description: string | null;
     image: string | null;
 } | null;
+
+export type CategoriesField = {
+    id: number,
+    name: string;
+} | null;

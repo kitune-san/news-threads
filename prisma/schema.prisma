@@ -58,10 +58,12 @@ model Topic {
   id            Int       @id @unique @default(autoincrement())
   createdAt     DateTime  @default(now())
   authorId      String
+  categoryId    Int
   title         String
   body          String    @db.Text
   comments      Comment[]
   user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }
 
 model Comment {
