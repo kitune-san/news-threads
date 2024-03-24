@@ -74,8 +74,10 @@ model Comment {
   authorId      String
   title         String
   body          String    @db.Text
-  user User @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  topc Topic @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  user          User      @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  topc          Topic     @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  parent        Comment?  @relation("ParetnChildrens", fields: [parentId], references: [id])
+  childrens     Comment[] @relation("ParetnChildrens")
 }
 
 model PostLog {
