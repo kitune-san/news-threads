@@ -1,7 +1,7 @@
 'use server'
 import { unstable_noStore as noStore, revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@/prisma/generated/client';
 import prisma from "@/db";
 import { auth } from "@/auth";
 import { number, z } from 'zod';

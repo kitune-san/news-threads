@@ -2,7 +2,7 @@
 
 import { unstable_cache, revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@/prisma/generated/client';
 import prisma from "@/db";
 import { auth } from "@/auth";
 import { number, z } from 'zod';
