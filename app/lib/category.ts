@@ -27,13 +27,34 @@ export async function createCategory(prevState: createCategoryState, formData: F
     noStore();
     const session = await auth();
 
-    // TODO: role check
-    if (session?.user == null) {
+    // role check
+    if ((session?.user?.userName == null)) {
         return {
             message: 'Please sign in.',
         }
     }
+    try {
+        const user = await prisma.user.findUnique({
+            select: {
+                role: true
+            },
+            where: {
+                id: session.user.id,
+                userName: session.user.userName
+            }
+        });
+        if (user?.role != 'ADMIN') {
+            return {
+                message: 'Not authorized.',
+            }
+        }
+    } catch (error) {
+        return {
+            message: 'Database error.',
+        }
+    }
 
+    // validate
     const validatedCategory = NewCategory.safeParse({
         name: formData.get('name'),
         description: formData.get('description'),
@@ -48,6 +69,7 @@ export async function createCategory(prevState: createCategoryState, formData: F
     }
     const { name, description, image } = validatedCategory.data;
 
+    // Add category
     try {
         await prisma.category.create({
             data: {
