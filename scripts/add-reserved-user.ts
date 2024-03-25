@@ -12,6 +12,8 @@ async function main() {
         { userName: 'undefined'},
         { userName: 'undefine'},
         { userName: 'undef'},
+        { userName: 'true'},
+        { userName: 'false'},
         { userName: 'user'},
         { userName: 'root'},
         { userName: 'admin'},
