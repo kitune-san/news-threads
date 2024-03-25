@@ -67,27 +67,27 @@ model Topic {
   id                Int         @id @unique @default(autoincrement())
   createdAt         DateTime    @default(now())
   deletedAt         DateTime?
-  authorId          String
-  categoryId        Int
+  authorId          String?
+  categoryId        Int?
   title             String
   body              String      @db.Text
   comments          Comment[]
-  user              User        @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  category          Category    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  user              User?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  category          Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
 }
 
 model Comment {
   id                Int         @id @unique @default(autoincrement())
-  topicId           Int
+  topicId           Int?
   parentId          Int?
   createdAt         DateTime    @default(now())
   deletedAt         DateTime?
-  authorId          String
+  authorId          String?
   title             String
   body              String      @db.Text
-  user              User        @relation(fields: [authorId], references: [id], onDelete: SetNull)
-  topc              Topic       @relation(fields: [topicId], references: [id], onDelete: SetNull)
-  parent            Comment?    @relation("ParetnChildrens", fields: [parentId], references: [id])
+  user              User?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  topc              Topic?      @relation(fields: [topicId], references: [id], onDelete: SetNull)
+  parent            Comment?    @relation("ParetnChildrens", fields: [parentId], references: [id], onDelete: SetNull)
   childrens         Comment[]   @relation("ParetnChildrens")
 }
 
@@ -95,10 +95,10 @@ model PostLog {
   id                Int         @id @unique @default(autoincrement())
   topicId           Int?
   commentId         Int?
-  authorId          String
+  authorId          String?
   createdAt         DateTime    @default(now())
   title             String
   body              String      @db.Text
   ip                String
-  user              User        @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  user              User?       @relation(fields: [authorId], references: [id], onDelete: SetNull)
 }
