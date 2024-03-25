@@ -35,7 +35,7 @@ createdb -O <username> <database-name>
 .env.localを開いて編集
 
 ```
-DATABASE_URL="postgresql://<username>:randompassword@localhost:5432/<database-name>?schema=public"
+DATABASE_URL="postgresql://<username>:<password>@localhost:5432/<database-name>?schema=public"
 DATABASE_DIRECT_URL=
 
 AUTH_SECRET= # Linux: `openssl rand -hex 32` or go to https://generate-secret.vercel.app/32
@@ -47,6 +47,16 @@ AUTH_GITHUB_SECRET=<GITHUBから取得>
 ```bash
 npx prisma migrate dev
 npx prisma generate
+```
+
+Githubを使用しない(credentials)場合のテストユーザ作成
+
+ユーザー名:user
+
+パスワード:password
+
+```bash
+npx env-cmd -f .env.local tsx scripts/add-test-user.ts
 ```
 
 アプリケーションを実行
