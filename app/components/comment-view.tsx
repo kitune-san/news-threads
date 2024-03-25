@@ -14,7 +14,7 @@ export default function CommentView({ parent_id, comments }: { parent_id: number
                 return (comment &&
                     <div key={comment.id} className='mb-1 border-2 border-[#AA9D80]'>
                         <CommentBox title={comment?.title} 
-                            sub={`by ${comment.user.userName} on ${new Date(comment.createdAt).toString()} #${comment.id}`}
+                            sub={`by ${comment.user?.userName} on ${new Date(comment.createdAt).toString()} #${comment.id}`}
                             body={comment?.body}/>
                         <div  className='mb-5'>
                             {comment.topicId && 

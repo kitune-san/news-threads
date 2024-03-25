@@ -270,7 +270,7 @@ async function fetchCommentsNoStore(id: number, getNum: number | undefined) : Pr
             },
             where: {
                 topicId: id,
-                deletedAt: null
+                deletedAt: null,
             }
         });
         return comments;

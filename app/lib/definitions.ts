@@ -4,10 +4,10 @@ export type Topic = {
     createdAt: Date;
     title: string;
     body: string;
-    authorId: string;
+    authorId: string | null;
     user: {
         userName: string | null;
-    };
+    } | null;
 } | null;
 
 export type Comment = {
@@ -17,10 +17,10 @@ export type Comment = {
     createdAt: Date;
     title: string;
     body: string;
-    authorId: string;
+    authorId: string | null;
     user: {
         userName: string | null;
-    };
+    } | null;
 } | null;
 
 export type Category = {
