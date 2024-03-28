@@ -13,7 +13,7 @@ export default async function Header() {
       </div>
       <div className='flex justify-center bg-amber-800 text-white text-6xl'>
         <Link href='/'>
-          <h1>Title</h1>
+          <h1>{process.env.APP_NAME}</h1>
         </Link>
       </div>
 

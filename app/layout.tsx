@@ -7,8 +7,12 @@ import Footer from '@/app/components/footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'App name',
-  description: 'App description',
+  title: process.env.APP_NAME,
+  description: process.env.APP_DESCRIPTION,
+  openGraph: {
+    title: process.env.OPENGRAPH_TITLE,
+    description: process.env.OPENGRAPH_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
