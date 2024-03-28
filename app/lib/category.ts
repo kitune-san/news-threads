@@ -9,6 +9,7 @@ import { Category } from '@/app/lib/definitions';
 
 const FormSchema = z.object({
     name: z.string({invalid_type_error: 'Name: Type Error'}).min(1, {message: 'Input name'}),
+    alias: z.string({invalid_type_error: 'Alias: Type Error'}),
     description: z.string({invalid_type_error: 'Description: Type Error'}),
     image: z.string({invalid_type_error: 'Image: Type Error'})
 });
@@ -17,6 +18,7 @@ const NewCategory = FormSchema;
 export type createCategoryState = {
     errors?: {
         name?: string[];
+        alias?:string[];
         description?: string[];
         image?: string[];
     };
@@ -57,6 +59,7 @@ export async function createCategory(prevState: createCategoryState, formData: F
     // validate
     const validatedCategory = NewCategory.safeParse({
         name: formData.get('name'),
+        alias: formData.get('alias'),
         description: formData.get('description'),
         image: formData.get('image')
     });
@@ -67,13 +70,14 @@ export async function createCategory(prevState: createCategoryState, formData: F
             message: 'Failed to create category.'
         };
     }
-    const { name, description, image } = validatedCategory.data;
+    const { name, alias, description, image } = validatedCategory.data;
 
     // Add category
     try {
         await prisma.category.create({
             data: {
                 name: name,
+                alias: alias,
                 description: description,
                 image: image
             }
@@ -103,6 +107,7 @@ export async function fetchCategories() : Promise<Category[]> {
             select : {
                 id: true,
                 name: true,
+                alias: true,
                 description: true,
                 image: true
             }

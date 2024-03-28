@@ -26,6 +26,7 @@ export type Comment = {
 export type Category = {
     id: number,
     name: string;
+    alias: string | null;
     description: string | null;
     image: string | null;
 } | null;

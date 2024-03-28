@@ -11,6 +11,7 @@ export default async function Page() {
                 <thead className="rounded-lg text-left text-sm font-normal">
                     <tr>
                         <th scope="col" className="px-3 py-3 font-medium">Category</th>
+                        <th scope="col" className="px-3 py-3 font-medium">Alias</th>
                         <th scope="col" className="px-3 py-3 font-medium">Description</th>
                         <th scope="col" className="px-3 py-3 font-medium">Image</th>
                         <th scope="col" className="px-3 py-3 font-medium">Edit</th>
@@ -21,6 +22,7 @@ export default async function Page() {
                         <tr key={category?.name}
                         className="w-full border-b py-3 text-sm last-of-type:border-none">
                             <td className="whitespace-nowrap px-3 py-1">{category?.name}</td>
+                            <td className="whitespace-nowrap px-3 py-1">{category?.alias}</td>
                             <td className="whitespace-nowrap px-3 py-1">{category?.description}</td>
                             <td className="whitespace-nowrap px-3 py-1">{category?.image}</td>
                             <td className="whitespace-nowrap px-3 py-1">

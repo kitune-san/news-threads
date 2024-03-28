@@ -20,6 +20,17 @@ export default function CategoryForm()
                     ))}
                 </div>
             </div>
+            <div aria-describedby='alias-error'>
+                <div>
+                    <label className='font-medium'>Alias:</label>
+                </div>
+                <input name='alias' type='text' placeholder='Alias' className='block w-full rounded-md border border-gray-200 py-2 pl-2 text-sm'/>
+                <div id='alias-error'>
+                    {state.errors?.alias && state.errors?.alias.map((error: string) => (
+                        <p key={error} className='text-red-500'>{error}</p>
+                    ))}
+                </div>
+            </div>
             <div aria-describedby='description-error'>
                 <div>
                     <label className='font-medium'>Description:</label>

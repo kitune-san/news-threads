@@ -58,6 +58,7 @@ model Account {
 model Category {
   id                Int         @id @unique @default(autoincrement())
   name              String      @unique
+  alias             String?
   description       String?
   image             String?
   topics            Topic[]
