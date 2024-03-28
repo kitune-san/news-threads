@@ -1,12 +1,16 @@
 import { auth } from '@/auth';
 import Link from 'next/link'
 import { SignIn, SignOut } from '@/app/components/sign-button'
+import { Advertise } from './advertise';
 
 export default async function Header() {
   const session = await auth();
   
   return (
     <header className='justify-center border-b'>
+      <div className='flex'>
+        <Advertise />
+      </div>
       <div className='flex justify-center bg-amber-800 text-white text-6xl'>
         <Link href='/'>
           <h1>Title</h1>
