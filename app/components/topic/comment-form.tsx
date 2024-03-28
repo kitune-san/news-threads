@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useFormState } from 'react-dom';
 import { createComment } from '@/app/lib/post';
-import { CommentBox } from './ui/post';
+import { CommentBox } from '@/app/components/topic/post';
 
 function VisbleCommentForm({ topic_id, parent_id, title_value } : { topic_id: number, parent_id: number | null, title_value: string}) {
     const ref = useRef<HTMLFormElement>(null);

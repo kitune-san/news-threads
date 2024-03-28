@@ -2,8 +2,8 @@
 import { useState } from 'react';
 import { useFormState } from 'react-dom';
 import { createTopic } from '@/app/lib/post';
-import { CategoriesField } from '@/app//lib/definitions';
-import { TopicBox } from '@/app/components/ui/post';
+import { CategoriesField } from '@/app/lib/definitions';
+import { TopicBox } from '@/app/components/topic/post';
 
 export default function TopicForm({ categories }: { categories: CategoriesField[] })
 {

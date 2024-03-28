@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { fetchPost, fetchComments } from '@/app/lib/post';
-import CommentForm from '@/app/components/comment-form';
-import CommentView from '@/app/components/comment-view';
-import { TopicBox } from '@/app/components/ui/post';
-import LoadAllButton from '@/app/components/ui/load-all-button';
+import CommentForm from '@/app/components/topic/comment-form';
+import CommentView from '@/app/components/topic/comment-view';
+import { TopicBox } from '@/app/components/topic/post';
+import LoadAllButton from '@/app/components/topic/load-all-button';
 
 async function Topic({id, getNum} : {id: number, getNum: number | undefined}) {
     const post = await fetchPost(id);

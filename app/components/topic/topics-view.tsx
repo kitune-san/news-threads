@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { fetchLatestTopics } from '@/app/lib/post';
-import { TopicDigestBox } from '@/app/components/ui/post';
+import { TopicDigestBox } from '@/app/components/topic/post';
 
 export default async function TopicsView({page} : {page: number}) {
     const latestPosts = await fetchLatestTopics(page);

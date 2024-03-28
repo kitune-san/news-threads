@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Suspense } from 'react';
-import TopicsView from '@/app/components/topics-view'
-import Pagination from "@/app/components/ui/pagination";
+import TopicsView from '@/app/components/topic/topics-view'
+import Pagination from "@/app/components/pagination";
 
 export default function Home({
   searchParams,

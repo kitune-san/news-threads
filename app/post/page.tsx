@@ -1,4 +1,4 @@
-import TopicForm from "@/app/components/newtopic-form";
+import TopicForm from "@/app/components/topic/newtopic-form";
 import { fetchCategories } from "@/app/lib/category";
 
 export default async function Page() {

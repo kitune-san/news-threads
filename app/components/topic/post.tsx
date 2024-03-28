@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import '@/app/components/markdown.css'
+import '@/app/components/topic/markdown.css'
 
 function PostTitle({ title, href, sub }: { title: string, href: string, sub: string })
 {

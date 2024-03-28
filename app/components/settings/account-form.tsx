@@ -4,8 +4,6 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { useFormState } from 'react-dom';
 import { setNewUserName } from '@/app/lib/user';
-import { date } from 'zod';
-import { SignOut } from '../sign-button';
 
 export default function AccountForm() {
     const ref = useRef<HTMLFormElement>(null);
