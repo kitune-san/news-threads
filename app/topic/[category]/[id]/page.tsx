@@ -5,24 +5,8 @@ import CommentForm from '@/app/components/topic/comment-form';
 import CommentView from '@/app/components/topic/comment-view';
 import { TopicBox } from '@/app/components/topic/post';
 import LoadAllButton from '@/app/components/topic/load-all-button';
-
-async function Topic({id, getNum} : {id: number, getNum: number | undefined}) {
-    const post = await fetchPost(id);
-
-    if (!post) return (<p>まだない</p>);
-
-    return (
-        <div>
-            <TopicBox key={`comment-${post.id}`} title={post.title} href={`/topic/${post.id}`} 
-                sub={`by ${post.user?.userName} ${new Date(post.createdAt).toString()}`}
-                body={post.body} />
-            <LoadAllButton />
-            <div>
-                <CommentForm topic_id={id} parent_id={null} title_value='' />
-            </div>
-        </div>
-    );
-}
+import { fetchCategoryIdByName } from '@/app/lib/category';
+import { Topic } from '@/app/lib/definitions';
 
 async function Comments({id, getNum} : {id: number, getNum: number | undefined}) {
     const comments = await fetchComments(id, getNum);
@@ -34,23 +18,30 @@ async function Comments({id, getNum} : {id: number, getNum: number | undefined})
     );
 }
 
-export default function Page({
+export default async function Page({
     params,
     searchParams 
 }: {
-    params: { id: string },
+    params: { category: string, id: string },
     searchParams?: {
         all?: string;
     }
 }) {
     const id = parseInt(params.id);
     const getNum = searchParams?.all == null ? 50 : undefined;
+    const post = await fetchPost(id);
+
+    if (!post || post.category?.name == null) return (<p>まだない</p>);
     
     return (
         <div>
-            <Suspense fallback={<p>Loading Topic...</p>}>
-                <Topic id={id} getNum={getNum} />
-            </Suspense>
+            <TopicBox key={`comment-${post.id}`} title={post.title} href={`/topic/${post.id}`} 
+                sub={`by ${post.user?.userName} ${new Date(post.createdAt).toString()}`}
+                body={post.body} />
+            <LoadAllButton />
+            <div>
+                <CommentForm topic_id={post.id} parent_id={null} title_value='' />
+            </div>
             <Suspense fallback={<p>Loading Comments...</p>}>
                 <Comments id={id} getNum={getNum} />
             </Suspense>

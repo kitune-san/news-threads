@@ -17,7 +17,7 @@ export default function Home({
   return (
     <main>
       <Suspense fallback={<p>Loading topics...</p>}>
-        <TopicsView page={currentPage}/>
+        <TopicsView page={currentPage} category={undefined} />
       </Suspense>
       <Pagination />
     </main>

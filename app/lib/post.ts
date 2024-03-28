@@ -87,6 +87,7 @@ export async function createTopic(prevState: createTopicState, formData: FormDat
     }
    
     revalidatePath('/');
+    revalidatePath('/topic/[category]', 'page');    // TODO:
     redirect('/');
 
     return prevState;
@@ -173,7 +174,7 @@ export async function createComment(prevState: createCommentState, formData: For
         };
     }
 
-    revalidatePath(`/topic/${commentInfo.topic_id}`);
+    revalidatePath(`/topic/[category]/[id]`, 'page');    // TODO:
 
     return {
         ...commentInfo,
@@ -181,9 +182,15 @@ export async function createComment(prevState: createCommentState, formData: For
     };
 }
 
-async function fetchLatestTopicsNoStore(page: number) : Promise<Topic[]> {
+async function fetchLatestTopicsNoStore(page: number, categoryId: number | undefined) : Promise<Topic[]> {
     const perPage = 15;
     const skip = perPage * page;
+
+    const where: Prisma.TopicWhereInput = {};
+
+    if (categoryId != null) {
+        where.categoryId = categoryId;
+    }
 
     try {
         const topics = await prisma.topic.findMany({
@@ -199,9 +206,15 @@ async function fetchLatestTopicsNoStore(page: number) : Promise<Topic[]> {
                     select: {
                         userName: true
                     }
+                },
+                category: {
+                    select: {
+                        name: true
+                    }
                 }
             },
             where: {
+                ...where,
                 deletedAt: null
             },
             orderBy: [{
@@ -232,11 +245,16 @@ async function fetchPostNoStore(id: number) : Promise<Topic> {
                     select: {
                         userName: true
                     }
+                },
+                category: {
+                    select: {
+                        name: true
+                    }
                 }
             },
             where: {
                 id: id,
-                deletedAt: null
+                deletedAt: null,
             }
         })
         return topic;

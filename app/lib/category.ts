@@ -117,3 +117,19 @@ export async function fetchCategories() : Promise<Category[]> {
         return [];
     }
 }
+
+export async function fetchCategoryIdByName(categoryName: string | undefined) : Promise<number | undefined> {
+    try {
+        const category = await prisma.category.findUnique({
+            select: {
+                id: true,
+            },
+            where: {
+                name: categoryName
+            }
+        })
+        return category?.id;
+    } catch (error) {
+        return undefined
+    } 
+}

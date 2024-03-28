@@ -8,6 +8,9 @@ export type Topic = {
     user: {
         userName: string | null;
     } | null;
+    category: {
+        name: string;
+    } | null;
 } | null;
 
 export type Comment = {
